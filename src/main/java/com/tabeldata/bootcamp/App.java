@@ -2,7 +2,10 @@ package com.tabeldata.bootcamp;
 
 import org.joda.time.LocalDateTime;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Hello world!
@@ -12,7 +15,7 @@ public class App {
     static String url = "jdbc:postgresql://127.0.0.1:5432/hr";
     static String username = "hr";
     static String password = "hr";
-    static String query = "select department_id, department_name  from departments";
+    static String query = "insert into regions(region_name) values ( 'Custom')";
 
     public static void main(String[] args) {
         LocalDateTime time = LocalDateTime.now();
@@ -22,16 +25,8 @@ public class App {
             Connection conn = DriverManager.getConnection(url, username, password);
 
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            statement.executeUpdate(query);
 
-            while (resultSet.next()) {
-                String data = String.format("%s, %s",
-                        resultSet.getString(1),
-                        resultSet.getString("department_name"));
-                System.out.println(data);
-            }
-
-            resultSet.close();
             statement.close();
             conn.close();
             System.out.println("Berhasil terkoneksi ke database!");
