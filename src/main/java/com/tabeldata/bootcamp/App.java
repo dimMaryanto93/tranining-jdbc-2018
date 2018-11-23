@@ -12,7 +12,7 @@ public class App {
     static String url = "jdbc:postgresql://127.0.0.1:5432/hr";
     static String username = "hr";
     static String password = "hr";
-    static String query = "select department_id, department_name  from departments where department_id = 11";
+    static String query = "select department_id, department_name  from departments";
 
     public static void main(String[] args) {
         LocalDateTime time = LocalDateTime.now();
@@ -23,13 +23,12 @@ public class App {
 
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            if (resultSet.next()) {
+
+            while (resultSet.next()) {
                 String data = String.format("%s, %s",
                         resultSet.getString(1),
                         resultSet.getString("department_name"));
                 System.out.println(data);
-            } else {
-                System.out.println("Data tidak ditemukan!");
             }
 
             resultSet.close();
