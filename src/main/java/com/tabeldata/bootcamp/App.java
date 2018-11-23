@@ -20,14 +20,19 @@ public class App {
 
         try {
             Connection conn = DriverManager.getConnection(url, username, password);
+
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 String data = String.format("%s, %s",
                         resultSet.getString(1),
                         resultSet.getString("department_name"));
                 System.out.println(data);
             }
+
+            resultSet.close();
+            statement.close();
+            conn.close();
             System.out.println("Berhasil terkoneksi ke database!");
 
         } catch (SQLException e) {
