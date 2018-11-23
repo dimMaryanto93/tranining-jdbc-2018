@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public class App {
 
-    static String url = "jdbc:postgresql//127.0.0.1:5432/hr";
+    static String url = "jdbc:postgresql://127.0.0.1:5432/hr";
     static String username = "hr";
     static String password = "hr";
 
