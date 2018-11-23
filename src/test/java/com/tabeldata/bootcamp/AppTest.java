@@ -1,5 +1,6 @@
 package com.tabeldata.bootcamp;
 
+import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -23,8 +24,10 @@ public class AppTest
     /**
      * @return the suite of tests being tested
      */
-    public static Test suite()
-    {
+    public static Test suite()  {
+        String huruf = "1";
+
+        Assert.assertEquals(huruf, "1");
         return new TestSuite( AppTest.class );
     }
 
