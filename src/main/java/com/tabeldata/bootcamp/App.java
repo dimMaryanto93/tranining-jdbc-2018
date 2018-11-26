@@ -12,7 +12,7 @@ public class App {
     static String url = "jdbc:postgresql://127.0.0.1:5432/hr";
     static String username = "hr";
     static String password = "hr";
-    static String query = "insert into regions(region_id,region_name) values (?, ?)";
+    static String query = "select * from regions where  lower(region_name) like ?";
 
     public static void main(String[] args) {
         LocalDateTime time = LocalDateTime.now();
@@ -22,12 +22,19 @@ public class App {
             Connection conn = DriverManager.getConnection(url, username, password);
 
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setInt(1, 6);
-            statement.setString(2, "Apa yaaa");
+            statement.setString(1, "%a%");
 
-            statement.executeUpdate();
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                System.out.println(
+                        String.format("{ region_id : %s, region_name: %s }",
+                                resultSet.getInt(1),
+                                resultSet.getString(2))
+                );
+            }
 
             statement.close();
+            resultSet.close();
             conn.close();
             System.out.println("Berhasil terkoneksi ke database!");
 
