@@ -12,7 +12,6 @@ public class App {
     static String url = "jdbc:postgresql://127.0.0.1:5432/hr";
     static String username = "hr";
     static String password = "hr";
-    static String query = "select * from regions where  lower(region_name) like ?";
 
     public static void main(String[] args) {
         LocalDateTime time = LocalDateTime.now();
@@ -21,9 +20,10 @@ public class App {
         try {
             Connection conn = DriverManager.getConnection(url, username, password);
 
+//            select data
+            String query = "select * from regions where  lower(region_name) like ?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, "%a%");
-
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 System.out.println(
@@ -32,6 +32,19 @@ public class App {
                                 resultSet.getString(2))
                 );
             }
+
+//            insert data baru
+            query = "insert into regions (region_name) values (?)";
+            statement = conn.prepareStatement(query);
+            statement.setString(1, "Something~");
+            statement.executeUpdate();
+
+            //            insert data baru
+            query = "delete from regions where region_id in (?, ?)";
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, 5);
+            statement.setInt(2, 6);
+            statement.executeUpdate();
 
             statement.close();
             resultSet.close();
