@@ -3,6 +3,8 @@ package com.tabeldata.bootcamp;
 import org.joda.time.LocalDateTime;
 
 import java.sql.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Hello world!
@@ -39,15 +41,19 @@ public class App {
 //            insert data baru
             query = "insert into regions (region_name) values (?)";
             statement = conn.prepareStatement(query);
-            statement.setString(1, "Something~");
-            statement.executeUpdate();
-            System.out.println("statement insert berhasil");
+            statement.setString(1, "batch 1");
+            statement.addBatch();
+            statement.setString(1, "batch 2");
+            statement.addBatch();
 
-            //            insert data baru
-            query = "insert into regions (region_name) values (?)";
-            statement = conn.prepareStatement(query);
-            statement.setString(1, "Something2");
-            statement.executeUpdate();
+            List<String> values = Arrays.asList("batch 3", "batch 4", "batch 5");
+            for(String value: values ){
+                statement.setString(1, value);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+
+
             System.out.println("statement insert berhasil");
 
             //            insert data baru
