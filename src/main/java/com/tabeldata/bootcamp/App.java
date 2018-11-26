@@ -17,8 +17,10 @@ public class App {
         LocalDateTime time = LocalDateTime.now();
         System.out.println(String.format("Hello World at %s", time));
 
+        Connection conn = null;
         try {
-            Connection conn = DriverManager.getConnection(url, username, password);
+            conn = DriverManager.getConnection(url, username, password);
+            conn.setAutoCommit(false);
 
 //            select data
             String query = "select * from regions where  lower(region_name) like ?";
@@ -32,12 +34,21 @@ public class App {
                                 resultSet.getString(2))
                 );
             }
+            System.out.println("Statement select berhasil");
 
 //            insert data baru
             query = "insert into regions (region_name) values (?)";
             statement = conn.prepareStatement(query);
             statement.setString(1, "Something~");
             statement.executeUpdate();
+            System.out.println("statement insert berhasil");
+
+            //            insert data baru
+            query = "insert into regions (region_name) values (?)";
+            statement = conn.prepareStatement(query);
+            statement.setString(1, "Something2");
+            statement.executeUpdate();
+            System.out.println("statement insert berhasil");
 
             //            insert data baru
             query = "delete from regions where region_id in (?, ?)";
@@ -45,15 +56,23 @@ public class App {
             statement.setInt(1, 5);
             statement.setInt(2, 6);
             statement.executeUpdate();
+            System.out.println("statement delete berhasil");
 
+            conn.commit();
             statement.close();
             resultSet.close();
             conn.close();
-            System.out.println("Berhasil terkoneksi ke database!");
-
         } catch (SQLException e) {
             System.out.println("Tidak bisa konek ke database");
             e.printStackTrace();
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+
         }
     }
 }
