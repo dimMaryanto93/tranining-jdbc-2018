@@ -1,8 +1,10 @@
 package com.tabeldata.bootcamp;
 
+import com.tabeldata.bootcamp.model.Region;
 import org.joda.time.LocalDateTime;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class App {
 
         Connection conn = null;
         try {
+            List<Region> regions = new ArrayList<Region>();
             conn = DriverManager.getConnection(url, username, password);
             conn.setAutoCommit(false);
 
@@ -30,11 +33,11 @@ public class App {
             statement.setString(1, "%a%");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                System.out.println(
-                        String.format("{ region_id : %s, region_name: %s }",
-                                resultSet.getInt(1),
-                                resultSet.getString(2))
-                );
+                Region region = new Region(
+                        resultSet.getInt(1),
+                        resultSet.getString(2));
+                System.out.println(region.toString());
+                regions.add(region);
             }
             System.out.println("Statement select berhasil");
 
